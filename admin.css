@@ -1,0 +1,249 @@
+:root {
+  --border: #d8d8d8;
+  --muted: #666;
+  --accent: #502B85;
+  --accentSoft: rgba(80,43,133,0.10);
+  --warn: #b00020;
+  --ok: #0b6b2b;
+  --radius: 8px;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #111;
+  background: #f5f5f7;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; }
+
+/* ── Header ── */
+.appHeader {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.appTitle { font-weight: 800; font-size: 16px; }
+.appTitleSub { color: var(--muted); font-weight: 400; margin-left: 4px; }
+.connStatus { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.connStatus.connected { color: var(--ok); font-weight: 700; }
+.headerRight { display: flex; gap: 8px; align-items: center; }
+
+/* ── Tabs ── */
+.tabs {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+}
+.tab {
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+}
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab:hover:not(.active) { color: #111; }
+
+/* ── Status bar ── */
+.statusBar {
+  padding: 0 24px;
+  font-size: 13px;
+  font-weight: 700;
+  min-height: 36px;
+  line-height: 36px;
+}
+.statusBar.ok { color: var(--ok); }
+.statusBar.warn { color: var(--warn); }
+
+/* ── Tab panes ── */
+.tabPane { display: none; padding: 24px; }
+.tabPane.active { display: block; }
+
+.paneHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.paneHeader h2 { margin: 0; font-size: 16px; }
+
+/* ── Data table ── */
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.dataTable th {
+  background: #f0f0f5;
+  text-align: left;
+  padding: 10px 12px;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border);
+}
+.dataTable td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.dataTable tr:last-child td { border-bottom: none; }
+.dataTable tr:hover td { background: #fafafa; }
+.dataTable input[type="text"],
+.dataTable input[type="number"],
+.dataTable input[type="color"] {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font: inherit;
+  font-size: 13px;
+  width: 100%;
+}
+.dataTable input[type="color"] {
+  width: 40px;
+  height: 30px;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.dataTable input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; }
+
+/* ── Buttons ── */
+button {
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  white-space: nowrap;
+}
+button.secondary { background: #fff; color: #111; }
+button.ghost { background: transparent; color: #111; border: 1px solid var(--border); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+button.danger { background: var(--warn); border-color: var(--warn); color: #fff; font-size: 12px; padding: 5px 10px; }
+button.small { font-size: 12px; padding: 5px 10px; }
+
+/* ── Access markers ── */
+.accessLayout { display: grid; grid-template-columns: 1fr 320px; gap: 24px; }
+.accessList {
+  background: #fff;
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.markerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.markerRow:last-child { border-bottom: none; }
+.accessAdd { background: #fff; border-radius: var(--radius); padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); align-self: start; }
+.accessAdd label { display: block; font-weight: 700; margin-bottom: 8px; }
+.addRow { display: flex; gap: 8px; }
+.addRow input { flex: 1; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font: inherit; }
+
+/* ── Disclaimers ── */
+.disclaimerLayout { display: flex; flex-direction: column; gap: 16px; max-width: 800px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-weight: 700; }
+.field textarea {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+.hint { color: var(--muted); font-size: 12px; font-weight: 400; }
+.rulesCard {
+  background: #fff;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.rulesTitle { font-weight: 800; margin-bottom: 12px; }
+.rulesRow { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.rulesRow label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.rulesRow input[type="number"] {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font: inherit;
+}
+
+/* ── Modals ── */
+.modalOverlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+}
+.modalOverlay.hidden { display: none; }
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px;
+  width: 480px;
+  max-width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+.modalTitle { font-weight: 800; font-size: 16px; margin-bottom: 16px; }
+.modal .field { margin-bottom: 14px; }
+.modal .field label { display: block; font-weight: 700; margin-bottom: 4px; font-size: 13px; }
+.modal .field input[type="text"],
+.modal .field input[type="password"],
+.modal .field input[type="number"],
+.modal .field input[type="color"],
+.modal .field textarea,
+.modal .field select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 13px;
+}
+.modal .field .hint {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.modal .field .hint code {
+  background: #f0f0f5;
+  padding: 1px 4px;
+  border-radius: 4px;
+}
+.modalActions { display: flex; gap: 10px; margin-top: 20px; }
+
+/* ── Colour swatch ── */
+.colourSwatch {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-right: 4px;
+  border: 1px solid rgba(0,0,0,0.15);
+}

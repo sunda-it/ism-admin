@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-03-04",
+  "defaultBil": 2,
+  "classifications": [
+    {
+      "bil": 0,
+      "cls": "UNOFFICIAL",
+      "label": "BIL 0 \u2013 UNOFFICIAL",
+      "def": "Not created in the course of official duties. No damage if disclosed.",
+      "colour": "#928884",
+      "expiryYears": null,
+      "skipDisclaimer": true
+    },
+    {
+      "bil": 1,
+      "cls": "OFFICIAL",
+      "label": "BIL 1 \u2013 OFFICIAL",
+      "def": "Routine business information. No or insignificant damage if disclosed.",
+      "colour": "#007A33",
+      "expiryYears": 7,
+      "skipDisclaimer": false
+    },
+    {
+      "bil": 2,
+      "cls": "OFFICIAL: Sensitive",
+      "label": "BIL 2 \u2013 OFFICIAL: Sensitive (Default)",
+      "def": "Sensitive information requiring extra handling. Limited damage to individuals or the organisation if compromised.",
+      "colour": "#502B85",
+      "expiryYears": 7,
+      "skipDisclaimer": false
+    },
+    {
+      "bil": 3,
+      "cls": "SENSITIVE",
+      "label": "BIL 3 \u2013 SENSITIVE",
+      "def": "Damage to the interests of the Organisation, or individuals.",
+      "colour": "#FF8C00",
+      "expiryYears": 7,
+      "skipDisclaimer": false
+    },
+    {
+      "bil": 4,
+      "cls": "CONFIDENTIAL",
+      "label": "BIL 4 \u2013 CONFIDENTIAL",
+      "def": "Severe damage to the interests of the Organisation, or individuals.",
+      "colour": "#EA032D",
+      "expiryYears": 7,
+      "skipDisclaimer": false
+    },
+    {
+      "bil": 5,
+      "cls": "PROTECTED",
+      "label": "BIL 5 \u2013 PROTECTED",
+      "def": "Exceptionally grave damage to the interests of the Organisation, or individuals.",
+      "colour": "#EA032D",
+      "expiryYears": 21,
+      "skipDisclaimer": false
+    }
+  ],
+  "caveats": [
+    {
+      "type": "P",
+      "label": "P \u2013 Project",
+      "hint": "Project name (max 128 chars)",
+      "maxLength": 128,
+      "maxCount": null,
+      "pattern": null,
+      "patternError": null,
+      "subOptions": null
+    },
+    {
+      "type": "SRA",
+      "label": "SRA \u2013 Special Release Approval",
+      "hint": "Format DDMMYY/NNN, e.g. 030326/001",
+      "maxLength": null,
+      "maxCount": null,
+      "pattern": "^\\d{6}\\/\\d{3}$",
+      "patternError": "SRA must be DDMMYY/NNN.",
+      "subOptions": null
+    },
+    {
+      "type": "CR",
+      "label": "CR \u2013 Client Release",
+      "hint": "Client release label (max 128 chars)",
+      "maxLength": 128,
+      "maxCount": null,
+      "pattern": null,
+      "patternError": null,
+      "subOptions": null
+    },
+    {
+      "type": "SH",
+      "label": "SH \u2013 Special Handling",
+      "hint": "",
+      "maxLength": 128,
+      "maxCount": null,
+      "pattern": null,
+      "patternError": null,
+      "subOptions": ["DELICATE-SOURCE", "EDITORIAL", "BOARD", "EXCLUSIVE-FOR"]
+    },
+    {
+      "type": "ORCON",
+      "label": "ORCON \u2013 Originator Controlled",
+      "hint": "Employee ID (single entry only)",
+      "maxLength": 32,
+      "maxCount": 1,
+      "pattern": null,
+      "patternError": null,
+      "subOptions": null
+    }
+  ],
+  "accessMarkers": [
+    "Archival Access",
+    "Authorised Public Access",
+    "Commercial",
+    "Copyright",
+    "Cultural",
+    "Embargo",
+    "Intellectual Property",
+    "Legal Privilege",
+    "Personal Privacy"
+  ],
+  "disclaimers": {
+    "default": "This email is intended for the named recipient only. If you received it in error, please notify the sender and delete it.",
+    "explicit": "This email may contain sensitive, confidential, or controlled information. It is provided strictly for the intended recipient and for authorised purposes only. Unauthorised access, disclosure, copying, distribution, or use of the information contained in this communication is prohibited and may be unlawful. If you are not the intended recipient, you must notify the sender immediately and permanently delete this email and any attachments. Any handling of sensitive information must comply with applicable Australian law and relevant organisational security requirements."
+  },
+  "explicitDisclaimerRules": {
+    "minBil": 3,
+    "ifHasCaveats": true,
+    "ifHasAccess": true
+  }
+}

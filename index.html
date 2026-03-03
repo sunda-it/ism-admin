@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ISM Manager – Admin</title>
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <!-- App header -->
+    <header class="appHeader">
+      <div class="headerLeft">
+        <div class="appTitle">ISM Manager <span class="appTitleSub">Admin</span></div>
+        <div class="connStatus" id="connStatus">Not connected to GitHub</div>
+      </div>
+      <div class="headerRight">
+        <button id="btnConnect" class="secondary" type="button">Connect to GitHub</button>
+        <button id="btnLoad" class="secondary" type="button" disabled>Load Config</button>
+        <button id="btnSave" type="button" disabled>Save to GitHub</button>
+      </div>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="classifications" type="button">Classifications</button>
+      <button class="tab" data-tab="caveats" type="button">Caveats</button>
+      <button class="tab" data-tab="access" type="button">Access Markers</button>
+      <button class="tab" data-tab="disclaimers" type="button">Disclaimers &amp; Rules</button>
+    </nav>
+
+    <!-- Status bar -->
+    <div class="statusBar" id="statusBar"></div>
+
+    <!-- Tab: Classifications -->
+    <div class="tabPane active" id="tab-classifications">
+      <div class="paneHeader">
+        <h2>Classifications</h2>
+        <button id="btnAddClass" type="button" class="secondary">+ Add Classification</button>
+      </div>
+      <table class="dataTable" id="classTable">
+        <thead>
+          <tr>
+            <th>BIL</th>
+            <th>Classification</th>
+            <th>Select Label</th>
+            <th>Definition</th>
+            <th>Colour</th>
+            <th>Expiry (yrs)</th>
+            <th>Skip Disclaimer</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="classBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Tab: Caveats -->
+    <div class="tabPane" id="tab-caveats">
+      <div class="paneHeader">
+        <h2>Caveats</h2>
+        <button id="btnAddCaveat" type="button" class="secondary">+ Add Caveat Type</button>
+      </div>
+      <table class="dataTable" id="caveatTable">
+        <thead>
+          <tr>
+            <th>Type Code</th>
+            <th>Label</th>
+            <th>Hint</th>
+            <th>Max Length</th>
+            <th>Max Count</th>
+            <th>Pattern</th>
+            <th>Sub-options</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="caveatBody"></tbody>
+      </table>
+    </div>
+
+    <!-- Tab: Access Markers -->
+    <div class="tabPane" id="tab-access">
+      <div class="paneHeader">
+        <h2>Access Markers</h2>
+      </div>
+      <div class="accessLayout">
+        <div class="accessList" id="accessList"></div>
+        <div class="accessAdd">
+          <label>Add new marker</label>
+          <div class="addRow">
+            <input id="newMarker" type="text" placeholder="e.g. National Cabinet" />
+            <button id="btnAddMarker" type="button">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab: Disclaimers & Rules -->
+    <div class="tabPane" id="tab-disclaimers">
+      <div class="paneHeader"><h2>Disclaimers &amp; Rules</h2></div>
+      <div class="disclaimerLayout">
+        <div class="field">
+          <label>Default disclaimer <span class="hint">(BIL 1–2 with no caveats or access markers)</span></label>
+          <textarea id="disclaimerDefault" rows="4"></textarea>
+        </div>
+        <div class="field">
+          <label>Explicit disclaimer <span class="hint">(high BIL, or any caveats / access markers)</span></label>
+          <textarea id="disclaimerExplicit" rows="6"></textarea>
+        </div>
+        <div class="rulesCard">
+          <div class="rulesTitle">Explicit disclaimer trigger rules</div>
+          <div class="rulesRow">
+            <label>Minimum BIL level</label>
+            <input id="ruleMinBil" type="number" min="0" max="10" style="width:60px" />
+          </div>
+          <div class="rulesRow">
+            <label><input id="ruleIfCaveats" type="checkbox" /> Trigger if email has any caveats</label>
+          </div>
+          <div class="rulesRow">
+            <label><input id="ruleIfAccess" type="checkbox" /> Trigger if email has any access markers</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: GitHub connection -->
+    <div class="modalOverlay hidden" id="modalOverlay">
+      <div class="modal">
+        <div class="modalTitle">Connect to GitHub</div>
+        <div class="field">
+          <label>Personal Access Token</label>
+          <input id="ghToken" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" />
+          <div class="hint">
+            Generate at github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens.<br>
+            Grant <strong>Contents: Read and write</strong> on the <code>ism-admin</code> repository.
+            Your token is stored only in this browser.
+          </div>
+        </div>
+        <div class="field">
+          <label>Repository</label>
+          <input id="ghRepo" type="text" value="sunda-it/ism-admin" />
+        </div>
+        <div class="field">
+          <label>Branch</label>
+          <input id="ghBranch" type="text" value="main" />
+        </div>
+        <div class="field">
+          <label>Config file path</label>
+          <input id="ghPath" type="text" value="config.json" />
+        </div>
+        <div class="modalActions">
+          <button id="btnModalSave" type="button">Connect</button>
+          <button id="btnModalCancel" type="button" class="ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Edit row (generic) -->
+    <div class="modalOverlay hidden" id="editOverlay">
+      <div class="modal" id="editModal">
+        <div class="modalTitle" id="editModalTitle">Edit</div>
+        <div id="editModalBody"></div>
+        <div class="modalActions">
+          <button id="btnEditSave" type="button">Save</button>
+          <button id="btnEditCancel" type="button" class="ghost">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
