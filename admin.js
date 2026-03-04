@@ -116,6 +116,7 @@ function renderAll() {
   renderCaveats();
   renderAccessMarkers();
   renderDisclaimers();
+  renderMarkingFormat();
 }
 
 // ── Classifications ───────────────────────────────────────────────────────────
@@ -290,6 +291,115 @@ function renderAccessMarkers() {
   });
 }
 
+// ── Marking Formats ───────────────────────────────────────────────────────────
+
+function renderMarkingFormat() {
+  const fmt = config.markingFormat || {};
+  const s = fmt.subject || {};
+  const b = fmt.banner  || {};
+
+  document.getElementById("fmtSecPrefix").value     = s.secPrefix    ?? "SEC=";
+  document.getElementById("fmtCaveatPrefix").value  = s.caveatPrefix ?? "CAVEAT=";
+  document.getElementById("fmtAccessPrefix").value  = s.accessPrefix ?? "ACCESS=";
+  document.getElementById("fmtSubjExpires").checked = s.includeExpires ?? true;
+
+  document.getElementById("fmtSeparator").value      = b.caveatSeparator ?? "//";
+  document.getElementById("fmtAccessLabel").value    = b.accessLabel     ?? "Sensitive:";
+  document.getElementById("fmtBannerExpires").checked = b.includeExpires ?? true;
+  document.getElementById("fmtPosition").value       = b.position    || "top";
+  document.getElementById("fmtAlignment").value      = b.alignment   || "center";
+  document.getElementById("fmtFontSize").value       = b.fontSize    || "13px";
+  document.getElementById("fmtBold").checked         = b.bold        ?? true;
+  document.getElementById("fmtUseClsColour").checked = b.useClassificationColour ?? true;
+  document.getElementById("fmtCustomColour").value   = b.customColour || "#111111";
+
+  const hasBg = !!(b.backgroundColour);
+  document.getElementById("fmtNoBg").checked  = !hasBg;
+  document.getElementById("fmtBgColour").value = b.backgroundColour || "#ffffff";
+  document.getElementById("fmtBgColour").disabled = !hasBg;
+
+  updateFormatPreviews();
+}
+
+function collectMarkingFormat() {
+  if (!config) return;
+  const hasBg = !document.getElementById("fmtNoBg").checked;
+  config.markingFormat = {
+    subject: {
+      secPrefix:      document.getElementById("fmtSecPrefix").value,
+      caveatPrefix:   document.getElementById("fmtCaveatPrefix").value,
+      accessPrefix:   document.getElementById("fmtAccessPrefix").value,
+      includeExpires: document.getElementById("fmtSubjExpires").checked,
+    },
+    banner: {
+      caveatSeparator:        document.getElementById("fmtSeparator").value,
+      accessLabel:            document.getElementById("fmtAccessLabel").value,
+      includeExpires:         document.getElementById("fmtBannerExpires").checked,
+      position:               document.getElementById("fmtPosition").value,
+      alignment:              document.getElementById("fmtAlignment").value,
+      fontSize:               document.getElementById("fmtFontSize").value || "13px",
+      bold:                   document.getElementById("fmtBold").checked,
+      useClassificationColour: document.getElementById("fmtUseClsColour").checked,
+      customColour:           document.getElementById("fmtCustomColour").value,
+      backgroundColour:       hasBg ? document.getElementById("fmtBgColour").value : "",
+    },
+  };
+}
+
+function updateFormatPreviews() {
+  // Build a sample model using the first classification
+  const cls = (config?.classifications || [])[0] || { cls: "OFFICIAL: Sensitive", colour: "#502B85" };
+  const sampleModel = {
+    cls: cls.cls, colour: cls.colour,
+    caveats: [{ type: "P", value: "ProjectName" }],
+    access: ["Legal Privilege"],
+    expires: "2033-03-04",
+  };
+
+  const s = {
+    secPrefix:      document.getElementById("fmtSecPrefix").value,
+    caveatPrefix:   document.getElementById("fmtCaveatPrefix").value,
+    accessPrefix:   document.getElementById("fmtAccessPrefix").value,
+    includeExpires: document.getElementById("fmtSubjExpires").checked,
+  };
+  const b = {
+    caveatSeparator: document.getElementById("fmtSeparator").value,
+    accessLabel:     document.getElementById("fmtAccessLabel").value,
+    includeExpires:  document.getElementById("fmtBannerExpires").checked,
+  };
+
+  // Subject preview
+  const sParts = [`${s.secPrefix}${sampleModel.cls}`];
+  sampleModel.caveats.forEach(c => sParts.push(`${s.caveatPrefix}${c.type}:${c.value}`));
+  sampleModel.access.forEach(a  => sParts.push(`${s.accessPrefix}${a}`));
+  if (s.includeExpires) sParts.push(`EXPIRES=${sampleModel.expires}`, `DOWNTO=${sampleModel.cls}`);
+  document.getElementById("previewSubject").textContent = `[${sParts.join(", ")}]`;
+
+  // Plain text banner preview
+  const sep = b.caveatSeparator || "//";
+  const accLabel = b.accessLabel || "Sensitive:";
+  let line1 = `[SEC=${sampleModel.cls}`;
+  sampleModel.caveats.forEach(c => { line1 += `${sep}${c.type}:${c.value}`; });
+  line1 += "]";
+  const bLines = [line1, `[${accLabel} ${sampleModel.access.join("; ")}]`];
+  if (b.includeExpires) bLines.push(`[EXPIRES=${sampleModel.expires}, DOWNTO=${sampleModel.cls}]`);
+  document.getElementById("previewBanner").textContent = bLines.join("\n");
+}
+
+function wireFormatTab() {
+  const liveFields = ["fmtSecPrefix","fmtCaveatPrefix","fmtAccessPrefix","fmtSubjExpires",
+    "fmtSeparator","fmtAccessLabel","fmtBannerExpires","fmtPosition","fmtAlignment",
+    "fmtFontSize","fmtBold","fmtUseClsColour","fmtCustomColour","fmtBgColour","fmtNoBg"];
+  liveFields.forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener("change", updateFormatPreviews);
+    if (el.type === "text") el.addEventListener("input", updateFormatPreviews);
+  });
+  document.getElementById("fmtNoBg").addEventListener("change", (e) => {
+    document.getElementById("fmtBgColour").disabled = e.target.checked;
+  });
+}
+
 // ── Disclaimers ───────────────────────────────────────────────────────────────
 
 function renderDisclaimers() {
@@ -349,6 +459,7 @@ function esc(s) {
 
 function init() {
   initTabs();
+  wireFormatTab();
   loadCredentials();
 
   // Restore unsaved session work
@@ -389,6 +500,7 @@ function init() {
   document.getElementById("btnLoad").addEventListener("click", loadConfig);
   document.getElementById("btnSave").addEventListener("click", () => {
     collectDisclaimers();
+    collectMarkingFormat();
     saveConfig();
   });
 

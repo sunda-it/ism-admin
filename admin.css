@@ -238,6 +238,35 @@ button.small { font-size: 12px; padding: 5px 10px; }
 }
 .modalActions { display: flex; gap: 10px; margin-top: 20px; }
 
+/* ── Marking Formats ── */
+.formatsLayout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .formatsLayout { grid-template-columns: 1fr; } }
+.formatCard {
+  background: #fff; border-radius: var(--radius);
+  padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.formatCardTitle { font-weight: 800; font-size: 14px; margin-bottom: 16px; }
+.formatGrid {
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 10px 16px; align-items: center;
+}
+.formatGrid label { font-weight: 600; font-size: 13px; }
+.formatGrid input[type="text"],
+.formatGrid select {
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 6px 8px; font: inherit; font-size: 13px; width: 100%;
+}
+.toggle { display: flex; align-items: center; gap: 8px; font-weight: 400 !important; cursor: pointer; }
+.toggle input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+.colourRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.formatPreview {
+  margin-top: 16px; padding: 12px;
+  background: #f5f5f7; border-radius: 6px;
+  font-family: ui-monospace, monospace; font-size: 12px;
+  white-space: pre-wrap; color: #555;
+  border: 1px dashed var(--border);
+}
+
 /* ── Colour swatch ── */
 .colourSwatch {
   display: inline-block;

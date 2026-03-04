@@ -26,6 +26,7 @@
       <button class="tab" data-tab="caveats" type="button">Caveats</button>
       <button class="tab" data-tab="access" type="button">Access Markers</button>
       <button class="tab" data-tab="disclaimers" type="button">Disclaimers &amp; Rules</button>
+      <button class="tab" data-tab="formats" type="button">Marking Formats</button>
     </nav>
 
     <!-- Status bar -->
@@ -119,6 +120,67 @@
             <label><input id="ruleIfAccess" type="checkbox" /> Trigger if email has any access markers</label>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Tab: Marking Formats -->
+    <div class="tabPane" id="tab-formats">
+      <div class="paneHeader"><h2>Marking Formats</h2></div>
+      <div class="formatsLayout">
+
+        <div class="formatCard">
+          <div class="formatCardTitle">Subject Line</div>
+          <div class="formatGrid">
+            <label>Classification prefix <span class="hint">(e.g. SEC=, or blank)</span></label>
+            <input id="fmtSecPrefix" type="text" placeholder="SEC=" />
+            <label>Caveat prefix <span class="hint">(e.g. CAVEAT=, or blank)</span></label>
+            <input id="fmtCaveatPrefix" type="text" placeholder="CAVEAT=" />
+            <label>Access prefix <span class="hint">(e.g. ACCESS=, or blank)</span></label>
+            <input id="fmtAccessPrefix" type="text" placeholder="ACCESS=" />
+            <label>Include EXPIRES / DOWNTO</label>
+            <label class="toggle"><input id="fmtSubjExpires" type="checkbox" /> Show expiry in subject</label>
+          </div>
+          <div class="formatPreview" id="previewSubject"></div>
+        </div>
+
+        <div class="formatCard">
+          <div class="formatCardTitle">Body Banner</div>
+          <div class="formatGrid">
+            <label>Caveat separator <span class="hint">(between classification and caveats)</span></label>
+            <input id="fmtSeparator" type="text" placeholder="//" />
+            <label>Access label <span class="hint">(e.g. Sensitive: or ACCESS:)</span></label>
+            <input id="fmtAccessLabel" type="text" placeholder="Sensitive:" />
+            <label>Include EXPIRES in banner</label>
+            <label class="toggle"><input id="fmtBannerExpires" type="checkbox" /> Show expiry in banner</label>
+            <label>Banner position</label>
+            <select id="fmtPosition">
+              <option value="top">Top of email</option>
+              <option value="bottom">Bottom of email</option>
+            </select>
+            <label>Text alignment</label>
+            <select id="fmtAlignment">
+              <option value="center">Centre</option>
+              <option value="left">Left</option>
+              <option value="right">Right</option>
+            </select>
+            <label>Font size</label>
+            <input id="fmtFontSize" type="text" placeholder="13px" style="width:80px" />
+            <label>Bold text</label>
+            <label class="toggle"><input id="fmtBold" type="checkbox" /> Bold</label>
+            <label>Text colour</label>
+            <div class="colourRow">
+              <label class="toggle"><input id="fmtUseClsColour" type="checkbox" /> Use classification colour</label>
+              <span class="hint" id="customColourHint"> or </span>
+              <input id="fmtCustomColour" type="color" value="#111111" />
+            </div>
+            <label>Background colour <span class="hint">(leave black for none)</span></label>
+            <input id="fmtBgColour" type="color" value="#ffffff" />
+            <label></label>
+            <label class="toggle"><input id="fmtNoBg" type="checkbox" checked /> No background (transparent)</label>
+          </div>
+          <div class="formatPreview" id="previewBanner"></div>
+        </div>
+
       </div>
     </div>
 
