@@ -170,6 +170,6 @@
       "customColour": "#111111",
       "backgroundColour": ""
     },
-    "htmlBannerTemplate": "<div id=\"org-security-banner\" style=\"background:{{backgroundCss}};color:{{textColour}};padding:5px 10px;text-align:center;font-weight:700;\">\n    [{{cls}}{{caveats}}{{accessLine}}{{expiresLine}}]\n  </div>"
+    "htmlBannerTemplate": "<div id=\"org-security-banner\" style=\"background:{{backgroundCss}};color:{{textColour}};padding:5px 10px;text-align:center;font-weight:700;\">{{cls}}{{caveats}}{{accessLine}}</div>"
   }
 }
