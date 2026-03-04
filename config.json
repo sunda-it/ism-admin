@@ -10,6 +10,7 @@
       "label": "BIL 0 – Unofficial",
       "def": "Not created in the course of official duties. No damage if disclosed.",
       "colour": "#928884",
+      "bgStyle": "solid",
       "expiryYears": null,
       "skipDisclaimer": true
     },
@@ -20,6 +21,7 @@
       "label": "BIL 1 – Official",
       "def": "Routine business information. No or insignificant damage if disclosed.",
       "colour": "#007a33",
+      "bgStyle": "solid",
       "expiryYears": 7,
       "skipDisclaimer": false
     },
@@ -30,6 +32,7 @@
       "label": "BIL 2 – Official: Sensitive",
       "def": "Sensitive information requiring extra handling. Limited damage to individuals or the organisation if compromised.",
       "colour": "#502b85",
+      "bgStyle": "solid",
       "expiryYears": 7,
       "skipDisclaimer": false
     },
@@ -40,6 +43,7 @@
       "label": "BIL 3 – Confidential",
       "def": "Damage to the interests of the Organisation, or individuals.",
       "colour": "#ff8c00",
+      "bgStyle": "solid",
       "expiryYears": 7,
       "skipDisclaimer": false
     },
@@ -61,6 +65,7 @@
       "label": "BIL 5 – Protected",
       "def": "Exceptionally grave damage to the interests of the Organisation, or individuals.",
       "colour": "#ea032d",
+      "bgStyle": "solid",
       "expiryYears": 21,
       "skipDisclaimer": false
     }
@@ -165,6 +170,6 @@
       "customColour": "#111111",
       "backgroundColour": ""
     },
-    "htmlBannerTemplate": null
+    "htmlBannerTemplate": "<div id=\"org-security-banner\" style=\"background:{{backgroundCss}};color:{{textColour}};padding:5px 10px;text-align:center;font-weight:700;\">\n    [{{cls}}{{caveats}}{{accessLine}}{{expiresLine}}]\n  </div>"
   }
 }
