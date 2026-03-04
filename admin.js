@@ -96,11 +96,20 @@ async function saveConfig() {
   if (!gh || !config) return;
   setStatus("Saving to GitHub…");
   try {
-    const sha = config._sha;
     const clean = { ...config };
     delete clean._sha;
     const text = JSON.stringify(clean, null, 2);
-    const result = await ghPut(gh.path, text, sha, "Update ISM config via admin app");
+    let sha = config._sha;
+    let result;
+    try {
+      result = await ghPut(gh.path, text, sha, "Update ISM config via admin app");
+    } catch (e) {
+      if (!e.message.includes("409")) throw e;
+      // SHA is stale — fetch the current SHA from GitHub and retry
+      setStatus("Refreshing SHA and retrying…");
+      const current = await ghGet(gh.path);
+      result = await ghPut(gh.path, text, current.sha, "Update ISM config via admin app");
+    }
     config._sha = result.content.sha;
     sessionStorage.setItem(CFG_KEY, JSON.stringify(config));
     setStatus("Saved to GitHub successfully.", "ok");
