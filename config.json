@@ -23,7 +23,7 @@
     },
     {
       "bil": 2,
-      "cls": "OFFICIAL: Sensitive",
+      "cls": "OFFICIAL: SENSITIVE",
       "label": "BIL 2 – Official: Sensitive",
       "def": "Sensitive information requiring extra handling. Limited damage to individuals or the organisation if compromised.",
       "colour": "#502b85",
