@@ -322,6 +322,8 @@ function renderMarkingFormat() {
   document.getElementById("fmtBgColour").value = b.backgroundColour || "#ffffff";
   document.getElementById("fmtBgColour").disabled = !hasBg;
 
+  document.getElementById("fmtHtmlTemplate").value = fmt.htmlBannerTemplate || "";
+
   updateFormatPreviews();
 }
 
@@ -347,6 +349,7 @@ function collectMarkingFormat() {
       customColour:           document.getElementById("fmtCustomColour").value,
       backgroundColour:       hasBg ? document.getElementById("fmtBgColour").value : "",
     },
+    htmlBannerTemplate: document.getElementById("fmtHtmlTemplate").value.trim() || null,
   };
 }
 
@@ -388,6 +391,41 @@ function updateFormatPreviews() {
   const bLines = [line1, `[${accLabel} ${sampleModel.access.join("; ")}]`];
   if (b.includeExpires) bLines.push(`[EXPIRES=${sampleModel.expires}, DOWNTO=${sampleModel.cls}]`);
   document.getElementById("previewBanner").textContent = bLines.join("\n");
+
+  // HTML banner template preview
+  const caveatsHtml = sampleModel.caveats.map(c => `${sep}${esc(c.type)}:${esc(c.value)}`).join("");
+  const accessHtml  = sampleModel.access.length ? `<br>${esc(accLabel)} ${sampleModel.access.map(esc).join("; ")}` : "";
+  const expiresHtml = b.includeExpires && sampleModel.expires
+    ? `<br>EXPIRES=${esc(sampleModel.expires)}, DOWNTO=${esc(sampleModel.cls)}` : "";
+
+  const tmpl = document.getElementById("fmtHtmlTemplate").value.trim();
+  let htmlOut;
+  if (tmpl) {
+    htmlOut = tmpl
+      .replace(/\{\{cls\}\}/g, esc(cls.cls))
+      .replace(/\{\{colour\}\}/g, esc(cls.colour))
+      .replace(/\{\{caveats\}\}/g, caveatsHtml)
+      .replace(/\{\{accessLine\}\}/g, accessHtml)
+      .replace(/\{\{expiresLine\}\}/g, expiresHtml);
+  } else {
+    const useClsColour = document.getElementById("fmtUseClsColour").checked;
+    const colour = useClsColour ? cls.colour : document.getElementById("fmtCustomColour").value;
+    const bold = document.getElementById("fmtBold").checked;
+    const alignment = document.getElementById("fmtAlignment").value;
+    const fontSize = document.getElementById("fmtFontSize").value || "13px";
+    const hasBg2 = !document.getElementById("fmtNoBg").checked;
+    const bgColour = hasBg2 ? document.getElementById("fmtBgColour").value : "";
+    const styleProps = [
+      `text-align:${alignment}`,
+      bold ? "font-weight:700" : "font-weight:400",
+      `font-size:${fontSize}`,
+      "margin:0 0 12px 0",
+      bgColour ? `background:${bgColour};padding:4px 8px;` : "",
+    ].filter(Boolean).join(";");
+    const header = `[${esc(cls.cls)}${caveatsHtml}${accessHtml}${expiresHtml}]`;
+    htmlOut = `<div id="org-security-banner" style="${styleProps}"><span style="color:${esc(colour)};">${header}</span></div>`;
+  }
+  document.getElementById("previewHtmlBanner").innerHTML = htmlOut;
 }
 
 function wireFormatTab() {
@@ -401,6 +439,11 @@ function wireFormatTab() {
   });
   document.getElementById("fmtNoBg").addEventListener("change", (e) => {
     document.getElementById("fmtBgColour").disabled = e.target.checked;
+  });
+  document.getElementById("fmtHtmlTemplate").addEventListener("input", updateFormatPreviews);
+  document.getElementById("btnResetTemplate").addEventListener("click", () => {
+    document.getElementById("fmtHtmlTemplate").value = "";
+    updateFormatPreviews();
   });
 }
 

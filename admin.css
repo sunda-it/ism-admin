@@ -279,6 +279,16 @@ button.small { font-size: 12px; padding: 5px 10px; }
 .secTokenStatus.ok   { color: var(--ok); }
 .secTokenStatus.warn { color: var(--warn); }
 
+/* ── HTML banner preview ── */
+.htmlPreview {
+  margin-top: 12px;
+  min-height: 40px;
+  padding: 12px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
 /* ── Colour swatch ── */
 .colourSwatch {
   display: inline-block;

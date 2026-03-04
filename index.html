@@ -183,6 +183,27 @@
           <div class="formatPreview" id="previewBanner"></div>
         </div>
 
+        <div class="formatCard" style="grid-column:1/-1">
+          <div class="formatCardTitle">HTML Banner Template</div>
+          <p class="hint" style="margin:0 0 10px">
+            Customise the HTML banner inserted into HTML-format emails.
+            Leave blank to use the auto-generated banner (controlled by the settings above).<br>
+            The banner element <strong>must</strong> include <code>id="org-security-banner"</code> so the extension can replace it on updates.<br>
+            Available placeholders:
+            <code>{{cls}}</code> classification &bull;
+            <code>{{colour}}</code> hex colour &bull;
+            <code>{{caveats}}</code> formatted caveats &bull;
+            <code>{{accessLine}}</code> access line with leading &lt;br&gt; (empty if none) &bull;
+            <code>{{expiresLine}}</code> expires line with leading &lt;br&gt; (empty if none)
+          </p>
+          <textarea id="fmtHtmlTemplate" rows="5" spellcheck="false"></textarea>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:10px">
+            <button type="button" class="secondary small" id="btnResetTemplate">Reset to default</button>
+            <span class="hint">Live preview (sample data):</span>
+          </div>
+          <div id="previewHtmlBanner" class="htmlPreview"></div>
+        </div>
+
       </div>
     </div>
 
