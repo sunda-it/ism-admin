@@ -49,9 +49,10 @@
       "portionMark": "R",
       "label": "BIL 4 – Restricted",
       "def": "Severe damage to the interests of the Organisation, or individuals.",
-      "colour": "#ea032d",
+      "colour": "#ff8c00",
+      "bgStyle": "pattern",
       "expiryYears": 7,
-      "skipDisclaimer": false
+      "skipDisclaimer": true
     },
     {
       "bil": 5,
