@@ -6,68 +6,68 @@
     {
       "bil": 0,
       "cls": "UNOFFICIAL",
-      "label": "BIL 0 \u2013 UNOFFICIAL",
+      "portionMark": "U",
+      "label": "BIL 0 – Unofficial",
       "def": "Not created in the course of official duties. No damage if disclosed.",
       "colour": "#928884",
       "expiryYears": null,
-      "skipDisclaimer": true,
-      "portionMark": "U"
+      "skipDisclaimer": true
     },
     {
       "bil": 1,
       "cls": "OFFICIAL",
-      "label": "BIL 1 \u2013 OFFICIAL",
+      "portionMark": "O",
+      "label": "BIL 1 – Official",
       "def": "Routine business information. No or insignificant damage if disclosed.",
-      "colour": "#007A33",
+      "colour": "#007a33",
       "expiryYears": 7,
-      "skipDisclaimer": false,
-      "portionMark": "O"
+      "skipDisclaimer": false
     },
     {
       "bil": 2,
-      "cls": "OFFICIAL: Sensitive",
-      "label": "BIL 2 \u2013 OFFICIAL: Sensitive (Default)",
+      "cls": "OFFICIAL: SENSITIVE",
+      "portionMark": "O:S",
+      "label": "BIL 2 – Official: Sensitive",
       "def": "Sensitive information requiring extra handling. Limited damage to individuals or the organisation if compromised.",
-      "colour": "#502B85",
+      "colour": "#502b85",
       "expiryYears": 7,
-      "skipDisclaimer": false,
-      "portionMark": "OS"
+      "skipDisclaimer": false
     },
     {
       "bil": 3,
-      "cls": "SENSITIVE",
-      "label": "BIL 3 \u2013 SENSITIVE",
+      "cls": "CONFIDENTIAL",
+      "portionMark": "C",
+      "label": "BIL 3 – Confidential",
       "def": "Damage to the interests of the Organisation, or individuals.",
-      "colour": "#FF8C00",
+      "colour": "#ff8c00",
       "expiryYears": 7,
-      "skipDisclaimer": false,
-      "portionMark": "S"
+      "skipDisclaimer": false
     },
     {
       "bil": 4,
-      "cls": "CONFIDENTIAL",
-      "label": "BIL 4 \u2013 CONFIDENTIAL",
+      "cls": "RESTRICTED",
+      "portionMark": "R",
+      "label": "BIL 4 – Restricted",
       "def": "Severe damage to the interests of the Organisation, or individuals.",
-      "colour": "#EA032D",
+      "colour": "#ea032d",
       "expiryYears": 7,
-      "skipDisclaimer": false,
-      "portionMark": "C"
+      "skipDisclaimer": false
     },
     {
       "bil": 5,
       "cls": "PROTECTED",
-      "label": "BIL 5 \u2013 PROTECTED",
+      "portionMark": "P",
+      "label": "BIL 5 – Protected",
       "def": "Exceptionally grave damage to the interests of the Organisation, or individuals.",
-      "colour": "#EA032D",
+      "colour": "#ea032d",
       "expiryYears": 21,
-      "skipDisclaimer": false,
-      "portionMark": "P"
+      "skipDisclaimer": false
     }
   ],
   "caveats": [
     {
       "type": "P",
-      "label": "P \u2013 Project",
+      "label": "P – Project",
       "hint": "Project name (max 128 chars)",
       "maxLength": 128,
       "maxCount": null,
@@ -77,7 +77,7 @@
     },
     {
       "type": "SRA",
-      "label": "SRA \u2013 Special Release Approval",
+      "label": "SRA – Special Release Approval",
       "hint": "Format DDMMYY/NNN, e.g. 030326/001",
       "maxLength": null,
       "maxCount": null,
@@ -87,7 +87,7 @@
     },
     {
       "type": "CR",
-      "label": "CR \u2013 Client Release",
+      "label": "CR – Client Release",
       "hint": "Client release label (max 128 chars)",
       "maxLength": 128,
       "maxCount": null,
@@ -97,17 +97,22 @@
     },
     {
       "type": "SH",
-      "label": "SH \u2013 Special Handling",
+      "label": "SH – Special Handling",
       "hint": "",
       "maxLength": 128,
       "maxCount": null,
       "pattern": null,
       "patternError": null,
-      "subOptions": ["DELICATE-SOURCE", "EDITORIAL", "BOARD", "EXCLUSIVE-FOR"]
+      "subOptions": [
+        "DELICATE-SOURCE",
+        "EDITORIAL",
+        "BOARD",
+        "EXCLUSIVE-FOR"
+      ]
     },
     {
       "type": "ORCON",
-      "label": "ORCON \u2013 Originator Controlled",
+      "label": "ORCON – Originator Controlled",
       "hint": "Employee ID (single entry only)",
       "maxLength": 32,
       "maxCount": 1,
@@ -145,19 +150,20 @@
       "secPrefix": "SEC=",
       "caveatPrefix": "CAVEAT=",
       "accessPrefix": "ACCESS=",
-      "includeExpires": true
+      "includeExpires": false
     },
     "banner": {
       "caveatSeparator": "//",
       "accessLabel": "Sensitive:",
-      "includeExpires": true,
+      "includeExpires": false,
       "position": "top",
       "alignment": "center",
+      "fontSize": "13px",
       "bold": true,
       "useClassificationColour": true,
       "customColour": "#111111",
-      "backgroundColour": "",
-      "fontSize": "13px"
-    }
+      "backgroundColour": ""
+    },
+    "htmlBannerTemplate": null
   }
 }
