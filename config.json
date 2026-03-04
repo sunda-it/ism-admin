@@ -136,7 +136,7 @@
     "ifHasAccess": true
   },
   "security": {
-    "orgTokenHash": "",
+    "orgTokenHash": "41b5fbd717a65d6dee7bbb4c44478547916069446c4a60840c26f427eac36c0f",
     "restrictionMessage": "This extension requires an organisation token. Please contact your IT administrator."
   },
   "markingFormat": {
