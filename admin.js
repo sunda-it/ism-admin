@@ -232,6 +232,7 @@ function renderCaveats() {
       <td>${cav.maxCount ?? "—"}</td>
       <td><code>${esc(cav.pattern || "—")}</code></td>
       <td>${cav.subOptions ? esc(cav.subOptions.join(", ")) : "—"}</td>
+      <td>${cav.format ? `<code>${esc(cav.format)}</code>` : '<span class="hint">default</span>'}</td>
       <td style="white-space:nowrap">
         <button class="small secondary" data-i="${i}" data-action="editCav">Edit</button>
         <button class="small danger" data-i="${i}" data-action="delCav" style="margin-left:4px">Remove</button>
@@ -264,7 +265,11 @@ function openEditCaveat(i) {
     <div class="field"><label>Max count (leave blank for unlimited)</label><input id="f_maxCnt" type="number" min="1" value="${cav.maxCount ?? ""}" /></div>
     <div class="field"><label>Regex pattern (leave blank for none)</label><input id="f_pattern" type="text" value="${esc(cav.pattern || "")}" /></div>
     <div class="field"><label>Pattern error message</label><input id="f_patErr" type="text" value="${esc(cav.patternError || "")}" /></div>
-    <div class="field"><label>Sub-options (comma-separated; use EXCLUSIVE-FOR for a named option)</label><input id="f_subs" type="text" value="${esc((cav.subOptions || []).join(", "))}" /></div>`;
+    <div class="field"><label>Sub-options (comma-separated; use EXCLUSIVE-FOR for a named option)</label><input id="f_subs" type="text" value="${esc((cav.subOptions || []).join(", "))}" /></div>
+    <div class="field"><label>Format string <span class="hint">leave blank for default <code>{{type}}:{{value}}</code></span></label>
+      <input id="f_format" type="text" placeholder="{{type}}:{{value}}" value="${esc(cav.format || "")}" />
+      <div class="hint" style="margin-top:4px">Placeholders: <code>{{type}}</code> type code &bull; <code>{{value}}</code> entered value &bull; <code>{{label}}</code> caveat label<br>Example: <code>{{value}} EYES ONLY</code> → <em>SGP EYES ONLY</em></div>
+    </div>`;
 
   editCallback = () => {
     const subsRaw = document.getElementById("f_subs").value.trim();
@@ -277,6 +282,7 @@ function openEditCaveat(i) {
       pattern: document.getElementById("f_pattern").value.trim() || null,
       patternError: document.getElementById("f_patErr").value.trim() || null,
       subOptions: subsRaw ? subsRaw.split(",").map((s) => s.trim()).filter(Boolean) : null,
+      format: document.getElementById("f_format").value.trim() || null,
     };
     if (!updated.type || !updated.label) {
       setStatus("Type code and Label are required.", "warn");
