@@ -130,6 +130,7 @@ function renderClassifications() {
     tr.innerHTML = `
       <td>${cls.bil}</td>
       <td>${esc(cls.cls)}</td>
+      <td><code>(${esc(cls.portionMark || "?")})</code></td>
       <td>${esc(cls.label)}</td>
       <td class="defCell">${esc(cls.def)}</td>
       <td><span class="colourSwatch" style="background:${esc(cls.colour)}"></span>${esc(cls.colour)}</td>
@@ -161,13 +162,14 @@ function renderClassifications() {
 
 function openEditClassification(i) {
   const cls = i === -1
-    ? { bil: "", cls: "", label: "", def: "", colour: "#502B85", expiryYears: 7, skipDisclaimer: false }
+    ? { bil: "", cls: "", label: "", def: "", colour: "#502B85", expiryYears: 7, skipDisclaimer: false, portionMark: "" }
     : { ...config.classifications[i] };
 
   document.getElementById("editModalTitle").textContent = i === -1 ? "Add Classification" : "Edit Classification";
   document.getElementById("editModalBody").innerHTML = `
     <div class="field"><label>BIL Number</label><input id="f_bil" type="number" min="0" value="${cls.bil}" /></div>
     <div class="field"><label>Classification (e.g. OFFICIAL: Sensitive)</label><input id="f_cls" type="text" value="${esc(cls.cls)}" /></div>
+    <div class="field"><label>Portion mark abbreviation <span class="hint">Displayed as (X) inline in documents</span></label><input id="f_pm" type="text" maxlength="10" placeholder="e.g. OS" value="${esc(cls.portionMark || "")}" style="width:100px" /></div>
     <div class="field"><label>Select label (shown in dropdown)</label><input id="f_label" type="text" value="${esc(cls.label)}" /></div>
     <div class="field"><label>Definition</label><textarea id="f_def" rows="3">${esc(cls.def)}</textarea></div>
     <div class="field"><label>Colour</label><input id="f_colour" type="color" value="${cls.colour}" /></div>
@@ -178,6 +180,7 @@ function openEditClassification(i) {
     const updated = {
       bil: Number(document.getElementById("f_bil").value),
       cls: document.getElementById("f_cls").value.trim(),
+      portionMark: document.getElementById("f_pm").value.trim().toUpperCase(),
       label: document.getElementById("f_label").value.trim(),
       def: document.getElementById("f_def").value.trim(),
       colour: document.getElementById("f_colour").value,
