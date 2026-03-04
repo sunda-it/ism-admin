@@ -133,7 +133,7 @@ function renderClassifications() {
       <td><code>(${esc(cls.portionMark || "?")})</code></td>
       <td>${esc(cls.label)}</td>
       <td class="defCell">${esc(cls.def)}</td>
-      <td><span class="colourSwatch" style="background:${esc(cls.colour)}"></span>${esc(cls.colour)}${cls.bgStyle === "hatched" ? ' <span class="hint">hatched</span>' : ''}</td>
+      <td><span class="colourSwatch" style="background:${esc(cls.colour)}"></span>${esc(cls.colour)}${cls.bgStyle && cls.bgStyle !== "white" ? ` <span class="hint">${esc(cls.bgStyle)}</span>` : ''}</td>
       <td>${cls.expiryYears ?? "None"}</td>
       <td><input type="checkbox" ${cls.skipDisclaimer ? "checked" : ""} data-i="${i}" class="chkSkip" /></td>
       <td style="white-space:nowrap">
@@ -175,8 +175,9 @@ function openEditClassification(i) {
     <div class="field"><label>Colour</label><input id="f_colour" type="color" value="${cls.colour}" /></div>
     <div class="field"><label>Background style <span class="hint">(used by {{backgroundCss}} placeholder)</span></label>
       <select id="f_bgStyle">
-        <option value="solid"  ${(!cls.bgStyle || cls.bgStyle === "solid")  ? "selected" : ""}>Solid colour</option>
-        <option value="hatched" ${cls.bgStyle === "hatched" ? "selected" : ""}>Hatched pattern</option>
+        <option value="white"   ${(!cls.bgStyle || cls.bgStyle === "white")   ? "selected" : ""}>White</option>
+        <option value="solid"   ${cls.bgStyle === "solid"   ? "selected" : ""}>Solid (classification colour)</option>
+        <option value="pattern" ${cls.bgStyle === "pattern" ? "selected" : ""}>Pattern (white + classification colour)</option>
       </select></div>
     <div class="field"><label>Expiry years (leave blank for none)</label><input id="f_expiry" type="number" min="0" value="${cls.expiryYears ?? ""}" /></div>
     <div class="field"><label><input id="f_skip" type="checkbox" ${cls.skipDisclaimer ? "checked" : ""} /> Skip disclaimer for this classification</label></div>`;
@@ -406,10 +407,10 @@ function updateFormatPreviews() {
 
   const tmpl = document.getElementById("fmtHtmlTemplate").value.trim();
   let htmlOut;
-  const bgStyle = cls.bgStyle || "solid";
-  const backgroundCss = bgStyle === "hatched"
+  const bgStyle = cls.bgStyle || "white";
+  const backgroundCss = bgStyle === "pattern"
     ? `repeating-linear-gradient(45deg, ${cls.colour}, ${cls.colour} 8px, #ffffff 8px, #ffffff 18px)`
-    : cls.colour;
+    : bgStyle === "solid" ? cls.colour : "#ffffff";
   const textColour = getContrastTextColour(cls.colour);
 
   if (tmpl) {
