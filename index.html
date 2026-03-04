@@ -47,7 +47,7 @@
             <th>Portion Mark</th>
             <th>Select Label</th>
             <th>Definition</th>
-            <th>Colour</th>
+            <th>Colour / BG style</th>
             <th>Expiry (yrs)</th>
             <th>Skip Disclaimer</th>
             <th></th>
@@ -192,6 +192,9 @@
             Available placeholders:
             <code>{{cls}}</code> classification &bull;
             <code>{{colour}}</code> hex colour &bull;
+            <code>{{bil}}</code> BIL number (0–5) &bull;
+            <code>{{backgroundCss}}</code> solid colour or hatched gradient (per classification setting) &bull;
+            <code>{{textColour}}</code> #000 or #fff for contrast against classification colour &bull;
             <code>{{caveats}}</code> formatted caveats &bull;
             <code>{{accessLine}}</code> access line with leading &lt;br&gt; (empty if none) &bull;
             <code>{{expiresLine}}</code> expires line with leading &lt;br&gt; (empty if none)
@@ -283,6 +286,7 @@
       </div>
     </div>
 
+    <script src="functions.js"></script>
     <script src="admin.js"></script>
   </body>
 </html>

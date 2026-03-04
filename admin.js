@@ -133,7 +133,7 @@ function renderClassifications() {
       <td><code>(${esc(cls.portionMark || "?")})</code></td>
       <td>${esc(cls.label)}</td>
       <td class="defCell">${esc(cls.def)}</td>
-      <td><span class="colourSwatch" style="background:${esc(cls.colour)}"></span>${esc(cls.colour)}</td>
+      <td><span class="colourSwatch" style="background:${esc(cls.colour)}"></span>${esc(cls.colour)}${cls.bgStyle === "hatched" ? ' <span class="hint">hatched</span>' : ''}</td>
       <td>${cls.expiryYears ?? "None"}</td>
       <td><input type="checkbox" ${cls.skipDisclaimer ? "checked" : ""} data-i="${i}" class="chkSkip" /></td>
       <td style="white-space:nowrap">
@@ -173,6 +173,11 @@ function openEditClassification(i) {
     <div class="field"><label>Select label (shown in dropdown)</label><input id="f_label" type="text" value="${esc(cls.label)}" /></div>
     <div class="field"><label>Definition</label><textarea id="f_def" rows="3">${esc(cls.def)}</textarea></div>
     <div class="field"><label>Colour</label><input id="f_colour" type="color" value="${cls.colour}" /></div>
+    <div class="field"><label>Background style <span class="hint">(used by {{backgroundCss}} placeholder)</span></label>
+      <select id="f_bgStyle">
+        <option value="solid"  ${(!cls.bgStyle || cls.bgStyle === "solid")  ? "selected" : ""}>Solid colour</option>
+        <option value="hatched" ${cls.bgStyle === "hatched" ? "selected" : ""}>Hatched pattern</option>
+      </select></div>
     <div class="field"><label>Expiry years (leave blank for none)</label><input id="f_expiry" type="number" min="0" value="${cls.expiryYears ?? ""}" /></div>
     <div class="field"><label><input id="f_skip" type="checkbox" ${cls.skipDisclaimer ? "checked" : ""} /> Skip disclaimer for this classification</label></div>`;
 
@@ -184,6 +189,7 @@ function openEditClassification(i) {
       label: document.getElementById("f_label").value.trim(),
       def: document.getElementById("f_def").value.trim(),
       colour: document.getElementById("f_colour").value,
+      bgStyle: document.getElementById("f_bgStyle").value,
       expiryYears: document.getElementById("f_expiry").value !== ""
         ? Number(document.getElementById("f_expiry").value) : null,
       skipDisclaimer: document.getElementById("f_skip").checked,
@@ -355,9 +361,9 @@ function collectMarkingFormat() {
 
 function updateFormatPreviews() {
   // Build a sample model using the first classification
-  const cls = (config?.classifications || [])[0] || { cls: "OFFICIAL: Sensitive", colour: "#502B85" };
+  const cls = (config?.classifications || [])[0] || { bil: 0, cls: "OFFICIAL: Sensitive", colour: "#502B85" };
   const sampleModel = {
-    cls: cls.cls, colour: cls.colour,
+    bil: cls.bil ?? 0, cls: cls.cls, colour: cls.colour,
     caveats: [{ type: "P", value: "ProjectName" }],
     access: ["Legal Privilege"],
     expires: "2033-03-04",
@@ -400,10 +406,19 @@ function updateFormatPreviews() {
 
   const tmpl = document.getElementById("fmtHtmlTemplate").value.trim();
   let htmlOut;
+  const bgStyle = cls.bgStyle || "solid";
+  const backgroundCss = bgStyle === "hatched"
+    ? `repeating-linear-gradient(45deg, ${cls.colour}, ${cls.colour} 8px, #ffffff 8px, #ffffff 18px)`
+    : cls.colour;
+  const textColour = getContrastTextColour(cls.colour);
+
   if (tmpl) {
     htmlOut = tmpl
       .replace(/\{\{cls\}\}/g, esc(cls.cls))
       .replace(/\{\{colour\}\}/g, esc(cls.colour))
+      .replace(/\{\{bil\}\}/g, String(sampleModel.bil))
+      .replace(/\{\{backgroundCss\}\}/g, backgroundCss)
+      .replace(/\{\{textColour\}\}/g, textColour)
       .replace(/\{\{caveats\}\}/g, caveatsHtml)
       .replace(/\{\{accessLine\}\}/g, accessHtml)
       .replace(/\{\{expiresLine\}\}/g, expiresHtml);
@@ -414,7 +429,7 @@ function updateFormatPreviews() {
     const alignment = document.getElementById("fmtAlignment").value;
     const fontSize = document.getElementById("fmtFontSize").value || "13px";
     const hasBg2 = !document.getElementById("fmtNoBg").checked;
-    const bgColour = hasBg2 ? document.getElementById("fmtBgColour").value : "";
+    const bgColour = hasBg2 ? backgroundCss : "";
     const styleProps = [
       `text-align:${alignment}`,
       bold ? "font-weight:700" : "font-weight:400",
