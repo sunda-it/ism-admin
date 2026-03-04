@@ -27,6 +27,7 @@
       <button class="tab" data-tab="access" type="button">Access Markers</button>
       <button class="tab" data-tab="disclaimers" type="button">Disclaimers &amp; Rules</button>
       <button class="tab" data-tab="formats" type="button">Marking Formats</button>
+      <button class="tab" data-tab="security" type="button">Security</button>
     </nav>
 
     <!-- Status bar -->
@@ -179,6 +180,38 @@
             <label class="toggle"><input id="fmtNoBg" type="checkbox" checked /> No background (transparent)</label>
           </div>
           <div class="formatPreview" id="previewBanner"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Tab: Security -->
+    <div class="tabPane" id="tab-security">
+      <div class="paneHeader"><h2>Security</h2></div>
+      <div class="securityLayout">
+
+        <div class="secCard">
+          <div class="secCardTitle">Organisation Token</div>
+          <p class="secDesc">
+            Set a token that all users must enter before the extension becomes active.
+            Only the <strong>SHA-256 hash</strong> of the token is stored in config —
+            the plain token is never saved here.
+          </p>
+          <div class="field">
+            <label>Set new token <span class="hint">(plain text — will be hashed before saving)</span></label>
+            <div class="addRow">
+              <input id="secToken" type="password" placeholder="Enter new organisation token" autocomplete="off" />
+              <button id="btnSetToken" type="button">Set Token</button>
+            </div>
+          </div>
+          <div class="secTokenStatus" id="secTokenStatus"></div>
+          <div class="field" style="margin-top:12px">
+            <label>Restriction message <span class="hint">(shown to users who haven't validated)</span></label>
+            <textarea id="secMessage" rows="2"></textarea>
+          </div>
+          <div style="margin-top:10px">
+            <button id="btnClearToken" type="button" class="ghost">Clear token (remove restriction)</button>
+          </div>
         </div>
 
       </div>

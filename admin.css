@@ -267,6 +267,18 @@ button.small { font-size: 12px; padding: 5px 10px; }
   border: 1px dashed var(--border);
 }
 
+/* ── Security ── */
+.securityLayout { max-width: 600px; }
+.secCard {
+  background: #fff; border-radius: var(--radius);
+  padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.secCardTitle { font-weight: 800; font-size: 14px; margin-bottom: 8px; }
+.secDesc { color: var(--muted); font-size: 13px; margin: 0 0 16px; line-height: 1.5; }
+.secTokenStatus { font-weight: 700; font-size: 13px; margin-top: 8px; min-height: 20px; }
+.secTokenStatus.ok   { color: var(--ok); }
+.secTokenStatus.warn { color: var(--warn); }
+
 /* ── Colour swatch ── */
 .colourSwatch {
   display: inline-block;

@@ -117,6 +117,7 @@ function renderAll() {
   renderAccessMarkers();
   renderDisclaimers();
   renderMarkingFormat();
+  renderSecurity();
 }
 
 // ── Classifications ───────────────────────────────────────────────────────────
@@ -447,6 +448,45 @@ function initTabs() {
   });
 }
 
+// ── Security ──────────────────────────────────────────────────────────────────
+
+async function sha256(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function renderSecurity() {
+  const sec = config.security || {};
+  const hasToken = !!(sec.orgTokenHash);
+  const el = document.getElementById("secTokenStatus");
+  el.className = "secTokenStatus " + (hasToken ? "ok" : "");
+  el.textContent = hasToken ? "Token is set \u2713" : "No token configured \u2014 extension is open access.";
+  document.getElementById("secMessage").value = sec.restrictionMessage || "";
+}
+
+function wireSecurityTab() {
+  document.getElementById("btnSetToken").addEventListener("click", async () => {
+    const plain = document.getElementById("secToken").value.trim();
+    if (!plain) return;
+    if (!config) { setStatus("Load a config first.", "warn"); return; }
+    const hash = await sha256(plain);
+    if (!config.security) config.security = {};
+    config.security.orgTokenHash = hash;
+    config.security.restrictionMessage = document.getElementById("secMessage").value.trim();
+    document.getElementById("secToken").value = "";
+    renderSecurity();
+    setStatus("Token set. Remember to Save to GitHub.", "ok");
+  });
+
+  document.getElementById("btnClearToken").addEventListener("click", () => {
+    if (!confirm("Remove the organisation token? The extension will become open access.")) return;
+    if (!config.security) config.security = {};
+    config.security.orgTokenHash = "";
+    renderSecurity();
+    setStatus("Token cleared. Remember to Save to GitHub.", "ok");
+  });
+}
+
 // ── Escape HTML ───────────────────────────────────────────────────────────────
 
 function esc(s) {
@@ -460,6 +500,7 @@ function esc(s) {
 function init() {
   initTabs();
   wireFormatTab();
+  wireSecurityTab();
   loadCredentials();
 
   // Restore unsaved session work

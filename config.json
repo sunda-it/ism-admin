@@ -130,6 +130,10 @@
     "ifHasCaveats": true,
     "ifHasAccess": true
   },
+  "security": {
+    "orgTokenHash": "",
+    "restrictionMessage": "This extension requires an organisation token. Please contact your IT administrator."
+  },
   "markingFormat": {
     "subject": {
       "secPrefix": "SEC=",
