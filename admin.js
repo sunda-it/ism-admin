@@ -464,18 +464,30 @@ function renderSecurity() {
   document.getElementById("secMessage").value = sec.restrictionMessage || "";
 }
 
+async function collectSecurity() {
+  if (!config) return;
+  if (!config.security) config.security = {};
+  // If admin typed a token but didn't click Set Token, hash it now
+  const plain = document.getElementById("secToken").value.trim();
+  if (plain) {
+    config.security.orgTokenHash = await sha256(plain);
+    document.getElementById("secToken").value = "";
+    renderSecurity();
+  }
+  config.security.restrictionMessage = document.getElementById("secMessage").value.trim();
+}
+
 function wireSecurityTab() {
   document.getElementById("btnSetToken").addEventListener("click", async () => {
     const plain = document.getElementById("secToken").value.trim();
-    if (!plain) return;
+    if (!plain) { setStatus("Enter a token first.", "warn"); return; }
     if (!config) { setStatus("Load a config first.", "warn"); return; }
-    const hash = await sha256(plain);
     if (!config.security) config.security = {};
-    config.security.orgTokenHash = hash;
+    config.security.orgTokenHash = await sha256(plain);
     config.security.restrictionMessage = document.getElementById("secMessage").value.trim();
     document.getElementById("secToken").value = "";
     renderSecurity();
-    setStatus("Token set. Remember to Save to GitHub.", "ok");
+    setStatus("Token set — click Save to GitHub to apply.", "ok");
   });
 
   document.getElementById("btnClearToken").addEventListener("click", () => {
@@ -483,7 +495,7 @@ function wireSecurityTab() {
     if (!config.security) config.security = {};
     config.security.orgTokenHash = "";
     renderSecurity();
-    setStatus("Token cleared. Remember to Save to GitHub.", "ok");
+    setStatus("Token cleared — click Save to GitHub to apply.", "ok");
   });
 }
 
@@ -539,9 +551,10 @@ function init() {
 
   // Load / Save
   document.getElementById("btnLoad").addEventListener("click", loadConfig);
-  document.getElementById("btnSave").addEventListener("click", () => {
+  document.getElementById("btnSave").addEventListener("click", async () => {
     collectDisclaimers();
     collectMarkingFormat();
+    await collectSecurity();
     saveConfig();
   });
 
